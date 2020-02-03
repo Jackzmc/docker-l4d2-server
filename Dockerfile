@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER Max Gonzih <gonzih at gmail dot com>
+LABEL maintainer="me@jackz.me"
 
 ENV USER csgo
 ENV HOME /home/$USER
