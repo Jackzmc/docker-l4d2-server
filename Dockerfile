@@ -1,24 +1,21 @@
-FROM ubuntu:18.04
+FROM debian:buster-slim
 LABEL maintainer="me@jackz.me"
 
 ENV USER csgo
-ENV HOME /home/$USER
-ENV SERVER $HOME/hlserver
+ENV SERVER /home/$USER/hlserver
 ENV STEAMACCOUNT ""
 ENV RCON_PASS ""
 ENV SV_PASS ""
 
-RUN apt-get -y update \
+RUN set -x \
+    && apt-get -y update \
     && apt-get -y upgrade \
-    && apt-get -y install lib32gcc1 curl net-tools lib32stdc++6 locales \
-    && locale-gen en_US.UTF-8 \
-    && update-locale LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8 \
-    && dpkg-reconfigure --frontend=noninteractive locales \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && useradd $USER \
-    && mkdir $HOME \
-    && chown $USER:$USER $HOME \
-    && mkdir $SERVER
+    && apt-get -y install  --no-install-recommends --no-install-suggests lib32gcc1 curl net-tools lib32stdc++6 ca-certificates \
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    && useradd -m $USER  \
+    && mkdir -p $SERVER
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
@@ -32,11 +29,11 @@ ADD ./csgo.sh $SERVER/csgo.sh
 RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
 
 USER $USER
-RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
-    && $SERVER/steamcmd.sh +runscript csgo_ds.txt
+RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xz \
+    && $SERVER/steamcmd.sh  +login anonymous +force_install_dir ./csgo +app_update 740 validate +quit&
 
 EXPOSE 27015/udp
-VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/addons 
+VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/addons $SERVER 
 
 WORKDIR $SERVER
 ENTRYPOINT ["./csgo.sh","+sv_steamaccount \"$STEAMACCOUNT\"","+sv_password \"$SV_PASS\"","+rcon_password \"$RCON_PASS\""]
