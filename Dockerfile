@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-MAINTAINER Max Gonzih <gonzih at gmail dot com>
+LABEL maintainer="me@jackz.me"
 
 ENV USER csgo
 ENV HOME /home/$USER
@@ -31,8 +31,7 @@ ADD ./csgo.sh $SERVER/csgo.sh
 RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
 
 USER $USER
-RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz \
-    && $SERVER/steamcmd.sh +runscript csgo_ds.txt
+RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xvz 
 
 EXPOSE 27015/udp
 VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/addons 
