@@ -30,10 +30,10 @@ RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
 
 USER $USER
 RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xz \
-    && $SERVER/steamcmd.sh  +login anonymous +force_install_dir ./csgo +app_update 740 validate +quit&
+    && $SERVER/steamcmd.sh +login anonymous +force_install_dir ./csgo +app_update 740 validate +quit
 
 EXPOSE 27015/udp
-VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/addons $SERVER 
+VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/cfg $SERVER 
 
 WORKDIR $SERVER
 ENTRYPOINT ["./csgo.sh","+sv_steamaccount \"$STEAMACCOUNT\"","+sv_password \"$SV_PASS\"","+rcon_password \"$RCON_PASS\""]
