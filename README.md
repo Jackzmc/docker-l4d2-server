@@ -1,7 +1,4 @@
-## Counter Strike Global Offensive + Docker
-
-[![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Gonzih/docker-csgo-server/blob/master/LICENSE.md)
-
+## Counter Strike Global Offensive + Docker [![License](http://img.shields.io/:license-mit-blue.svg)](https://github.com/Gonzih/docker-csgo-server/blob/master/LICENSE.md)
 CS:GO server in docker with 128 tick enabled by default.
 
 Original creator: [Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-csgo-server)
@@ -11,6 +8,10 @@ Original creator: [Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-c
 ```shell
 docker pull jackzmc/srcds-csgo
 ```
+
+### Tag Descriptions / Dockerfile Links
+* [Latest](https://github.com/Jackzmc/docker-csgo-server/blob/master/Dockerfile) - The latest, full game image.
+* [Bare](https://github.com/Jackzmc/docker-csgo-server/blob/bare/Dockerfile) - Does not contain a predownloaded game image, must be installed on start
 
 #### Envs:
 ```env 
@@ -64,3 +65,4 @@ docker run -d -p 27015:27015 -p 27015:27015/udp csgo -console -usercon +game_typ
 To run public server you need to [Register Login Token](http://steamcommunity.com/dev/managegameservers) and adding `+sv_setsteamaccount THISGSLTHERE -net_port_try 1` to the server command or passing the env variable:
 `-e STEAMACCOUNT="THISGSLTHERE"`
 Refer to [Docs](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#Registering_Game_Server_Login_Token) for more details.
+
