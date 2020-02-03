@@ -34,10 +34,11 @@ docker build -t csgo github.com/jackzmc/docker-csgo-server
 docker run -d -p 27015:27015 -p 27015:27015/udp csgo
 
 # Run image with hostname and GLST token, classic casual server
-docker run -it -p 27032:27015 -p 27032:27015/udp -e STEAMACCOUNT="<GSLT TOKEN HERE>" csgo -console -usercon +mapgroup mg_active +map de_cache +hostname "\"CSGO 2 | Docker Test | jackzmc\""
+docker run -it -p 27032:27015 -p 27032:27015/udp -e STEAMACCOUNT="<GSLT TOKEN HERE>" csgo -console -usercon +mapgroup mg_active +map de_cache +hostname "\"MyCsgoServer\""
+# (to have spaces in hostname you need to escape quotes: \"
 
-# Run image with hostname and GLST token, classic casual server
-docker run -it -p 27032:27015 -p 27032:27015/udp -e STEAMACCOUNT="<GSLT TOKEN HERE>" csgo -console -usercon +mapgroup mg_active +map de_cache +hostname "\"CSGO 2 | Docker Test | jackzmc\""
+# Run a private server, with rcon and password
+docker run -it -p 27032:27015 -p 27032:27015/udp -e SV_PASS="mypass" -e RCON_PASS="rconpass123" csgo -console -usercon +mapgroup mg_active +map de_cache
 
 # Run image with as Classic Casual server
 docker run -d -p 27015:27015 -p 27015:27015/udp csgo -console -usercon +game_type 0 +game_mode 0 +mapgroup mg_active +map de_cache
