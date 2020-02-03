@@ -1,11 +1,12 @@
 FROM debian:buster-slim
 LABEL maintainer="me@jackz.me"
 
-ENV USER csgo
-ENV SERVER /home/$USER/hlserver
+ENV USER steam
+ENV SERVER /home/$USER/server
 ENV STEAMACCOUNT ""
 ENV RCON_PASS ""
 ENV SV_PASS ""
+# server will contain root dir (aka for csgo, ~/server/csgo/addons)
 
 RUN set -x \
     && apt-get -y update \
@@ -17,23 +18,19 @@ RUN set -x \
     && useradd -m $USER  \
     && mkdir -p $SERVER
 
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
-
 ADD ./csgo_ds.txt $SERVER/csgo_ds.txt
-ADD ./autoexec.cfg $SERVER/csgo/csgo/cfg/autoexec.cfg
-ADD ./server.cfg $SERVER/csgo/csgo/cfg/server.cfg
+ADD ./autoexec.cfg $SERVER/csgo/cfg/autoexec.cfg
+ADD ./server.cfg $SERVER/csgo/cfg/server.cfg
 ADD ./csgo.sh $SERVER/csgo.sh
 
 RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
 
 USER $USER
-RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C $SERVER -xz \
-    && $SERVER/steamcmd.sh +login anonymous +force_install_dir ./csgo +app_update 740 validate +quit
+RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C "/home/$USER" -xz \
+    && $SERVER/steamcmd.sh +login anonymous +force_install_dir $SERVER +app_update 740 validate +quit
 
 EXPOSE 27015/udp
-VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/cfg $SERVER 
+VOLUME $SERVER/csgo/addons $SERVER/csgo/cfg $SERVER 
 
 WORKDIR $SERVER
 ENTRYPOINT ["./csgo.sh","+sv_steamaccount \"$STEAMACCOUNT\"","+sv_password \"$SV_PASS\"","+rcon_password \"$RCON_PASS\""]

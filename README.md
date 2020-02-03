@@ -12,9 +12,12 @@ docker pull jackzmc/srcds-csgo
 ### Tag Descriptions / Dockerfile Links
 * [Latest](https://github.com/Jackzmc/docker-csgo-server/blob/master/Dockerfile) - The latest, full game image.
 * [Bare](https://github.com/Jackzmc/docker-csgo-server/blob/bare/Dockerfile) - Does not contain a predownloaded game image, must be installed on start
+* [Sourcemod](https://github.com/Jackzmc/docker-csgo-server/blob/sourcemod/Dockerfile) - Contains bare version with sourcemod preinstalled
 
 #### Envs:
 ```env 
+USER - username for /home/ dir (default: steam)
+SERVER - where to store data files (steamcmd & csgo dir)
 STEAMACCOUNT - Sets sv_steamaccount cvar, to specify GSLT token
 RCON_PASS - Sets the rcon_pass cvar, defaults to "" (disabled)
 SV_PASS - Sets the server password cvar, defaults to none
@@ -24,7 +27,10 @@ SV_PASS - Sets the server password cvar, defaults to none
 By default image is build with enabled autoupdate feature (take a look at `csgo.sh` file).
 You can create new Dockerfile based on that image (FROM csgo) and customize it with plugins, configs, CMD and ENTRYPOINT instructions.
 
-
+Also you can create volumes with the `-v` flag that point to the host for these directories:
+* /home/steam/csgo
+* /home/steam/csgo/csgo/cfg
+* /home/steam/csgo/csgo/addons
 
 
 ```shell
