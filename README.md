@@ -4,22 +4,40 @@
 
 CS:GO server in docker with 128 tick enabled by default.
 
+Original creator: [Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-csgo-server)
+
 ### Docker hub image
 
 ```shell
-docker pull gonzih/csgo-server
+docker pull jackzmc/srcds-csgo
+```
+
+#### Envs:
+```env 
+STEAMACCOUNT - Sets sv_steamaccount cvar, to specify GSLT token
+RCON_PASS - Sets the rcon_pass cvar, defaults to "" (disabled)
+SV_PASS - Sets the server password cvar, defaults to none
 ```
 
 ### Details:
 By default image is build with enabled autoupdate feature (take a look at `csgo.sh` file).
 You can create new Dockerfile based on that image (FROM csgo) and customize it with plugins, configs, CMD and ENTRYPOINT instructions.
 
+
+
+
 ```shell
 # Build image and tag it as csgo
-docker build -t csgo github.com/Gonzih/docker-csgo-server
+docker build -t csgo github.com/jackzmc/docker-csgo-server
 
 # Run image with default options (CMD in Dockerfile)
 docker run -d -p 27015:27015 -p 27015:27015/udp csgo
+
+# Run image with hostname and GLST token, classic casual server
+docker run -it -p 27032:27015 -p 27032:27015/udp -e STEAMACCOUNT="<GSLT TOKEN HERE>" csgo -console -usercon +mapgroup mg_active +map de_cache +hostname "\"CSGO 2 | Docker Test | jackzmc\""
+
+# Run image with hostname and GLST token, classic casual server
+docker run -it -p 27032:27015 -p 27032:27015/udp -e STEAMACCOUNT="<GSLT TOKEN HERE>" csgo -console -usercon +mapgroup mg_active +map de_cache +hostname "\"CSGO 2 | Docker Test | jackzmc\""
 
 # Run image with as Classic Casual server
 docker run -d -p 27015:27015 -p 27015:27015/udp csgo -console -usercon +game_type 0 +game_mode 0 +mapgroup mg_active +map de_cache
@@ -42,5 +60,6 @@ docker run -d -p 27015:27015 -p 27015:27015/udp csgo -console -usercon +game_typ
 
 ### Running public server
 
-To run public server you need to [Register Login Token](http://steamcommunity.com/dev/managegameservers) and adding `+sv_setsteamaccount THISGSLTHERE -net_port_try 1` to the server command.
+To run public server you need to [Register Login Token](http://steamcommunity.com/dev/managegameservers) and adding `+sv_setsteamaccount THISGSLTHERE -net_port_try 1` to the server command or passing the env variable:
+`-e STEAMACCOUNT="THISGSLTHERE"`
 Refer to [Docs](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Dedicated_Servers#Registering_Game_Server_Login_Token) for more details.
