@@ -5,6 +5,9 @@ ENV USER csgo
 ENV HOME /home/$USER
 ENV SERVER $HOME/hlserver
 ENV STEAMACCOUNT ""
+ENV RCON_PASS ""
+ENV SV_PASS ""
+
 
 RUN apt-get -y update \
     && apt-get -y upgrade \
@@ -37,5 +40,5 @@ EXPOSE 27015/udp
 VOLUME $SERVER/csgo/csgo/addons $SERVER/csgo/csgo/addons 
 
 WORKDIR /home/$USER/hlserver
-ENTRYPOINT ["./csgo.sh","+sv_steamaccount \"$STEAMACCOUNT\""]
+ENTRYPOINT ["./csgo.sh","+sv_steamaccount \"$STEAMACCOUNT\"","+sv_password \"$SV_PASS\"","+rcon_password \"$RCON_PASS\""]
 CMD ["-console" "-usercon" "+game_type" "0" "+game_mode" "1" "+mapgroup" "mg_active" "+map" "de_cache"]
