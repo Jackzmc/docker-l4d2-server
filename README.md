@@ -25,9 +25,9 @@ By default image is build with enabled autoupdate feature (take a look at `csgo.
 You can create new Dockerfile based on that image (FROM csgo) and customize it with plugins, configs, CMD and ENTRYPOINT instructions.
 
 Also you can create volumes with the `-v` flag that point to the host for these directories:
-* /home/steam/csgo
-* /home/steam/csgo/csgo/cfg
-* /home/steam/csgo/csgo/addons
+* /home/steam/server/csgo
+* /home/steam/server/csgo/cfg
+* /home/steam/server/csgo/addons
 
 
 ```shell
