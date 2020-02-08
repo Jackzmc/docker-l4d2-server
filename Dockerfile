@@ -1,6 +1,9 @@
 FROM debian:buster-slim
 LABEL maintainer="me@jackz.me"
 
+ARG appid=222860
+ARG appname=left4dead2
+
 ENV USER steam
 ENV SERVER /home/$USER/server
 # $SERVER will contain root dir (aka for csgo, ~/server/csgo/addons)
@@ -16,25 +19,26 @@ RUN set -x \
     && useradd -m $USER  \
     && mkdir -p $SERVER
 
-COPY ./csgo_ds.txt $SERVER/csgo_ds.txt
-COPY ./autoexec.cfg $SERVER/csgo/cfg/autoexec.cfg
-COPY ./server.cfg $SERVER/csgo/cfg/server.cfg
-COPY ./csgo.sh $SERVER/csgo.sh
+COPY ./autoexec.cfg $SERVER/$appname/cfg/autoexec.cfg
+COPY ./server.cfg $SERVER/$appname/cfg/server.cfg
+COPY ./entry.sh $SERVER/entry.sh
 
 RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
 
 USER $USER
 
 RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C /home/$USER -xz \
-    && /home/$USER/steamcmd.sh +login anonymous +force_install_dir $SERVER +app_update 740 +quit \
-    && mkdir -p /home/$USER/.steam/sdk32 /home/$USER/.steam/sdk64  \
-    && cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
+    && /home/$USER/steamcmd.sh +quit \
+    && mkdir -p /home/$USER/.steam/sdk32 /home/$USER/.steam/sdk64
+
+COPY ./srcds-cache $SERVER
+RUN cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 COPY ./srcds_run $SERVER/srcds_run
 # srcds cant find steamclient.so, copy it locally && srcds_run has incorrect autorestart executable (uses steam.sh instead of steamcmd.sh)
 
 EXPOSE 27015/udp
-VOLUME $SERVER/csgo/addons $SERVER/csgo/cfg $SERVER 
+VOLUME $SERVER/$gamename/addons $SERVER/$gamename/cfg $SERVER 
 
 WORKDIR $SERVER
-ENTRYPOINT ["./csgo.sh"]
-CMD ["-console" "-usercon" "+game_type" "0" "+game_mode" "1" "+mapgroup" "mg_active" "+map" "de_cache"]
+ENTRYPOINT ["./entry.sh"]
+CMD ["-console" "-usercon"]
