@@ -1,8 +1,7 @@
 FROM debian:buster-slim
 LABEL maintainer="me@jackz.me"
 
-ARG appid=222860
-ARG appname=left4dead2
+ARG APPNAME=left4dead2
 
 ENV USER steam
 ENV SERVER /home/$USER/server
@@ -19,8 +18,8 @@ RUN set -x \
     && useradd -m $USER  \
     && mkdir -p $SERVER
 
-COPY ./autoexec.cfg $SERVER/$appname/cfg/autoexec.cfg
-COPY ./server.cfg $SERVER/$appname/cfg/server.cfg
+COPY ./autoexec.cfg $SERVER/$APPNAME/cfg/autoexec.cfg
+COPY ./server.cfg $SERVER/$APPNAME/cfg/server.cfg
 COPY ./entry.sh $SERVER/entry.sh
 
 RUN chown -R $USER:$USER $SERVER && chmod +x $SERVER/*.sh
@@ -37,7 +36,7 @@ COPY ./srcds_run $SERVER/srcds_run
 # srcds cant find steamclient.so, copy it locally && srcds_run has incorrect autorestart executable (uses steam.sh instead of steamcmd.sh)
 
 EXPOSE 27015/udp
-VOLUME $SERVER/$gamename/addons $SERVER/$gamename/cfg $SERVER 
+VOLUME $SERVER/$APPNAME/addons $SERVER/$APPNAME/cfg $SERVER 
 
 WORKDIR $SERVER
 ENTRYPOINT ["./entry.sh"]
