@@ -1,7 +1,7 @@
 #!/bin/bash
 APPID=222860
 APPNAME=left4dead2
-
+NAMESPACE=jackzmc
 if [[ ! -d "steamcmd" ]]; then
     echo "No steamcmd detected, setting up steamcmd..."
     mkdir steamcmd
@@ -11,6 +11,6 @@ fi
 steamcmd/steamcmd.sh +force_install_dir $PWD/srcds_cache +login anonymous +app_update $APPID validate +quit
 cp steamcmd/linux32/steamclient.so $PWD/srcds_cache/bin
 echo Building base...
-docker build -t srcds-l4d2:base -f base/Dockerfile "."
+docker build -t $NAMESPACE/srcds-l4d2:base -f base/Dockerfile "."
 echo Building sourcemod...
-docker build -t srcds-l4d2:sourcemod -f sourcemod/Dockerfile "."
+docker build -t $NAMESPACE/srcds-l4d2:sourcemod -f sourcemod/Dockerfile "."
