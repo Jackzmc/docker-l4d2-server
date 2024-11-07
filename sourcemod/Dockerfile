@@ -1,4 +1,4 @@
-FROM srcds-l4d2:base
+FROM jackzmc/srcds-l4d2:base
 
 ARG APPNAME=left4dead2
 
