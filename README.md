@@ -3,7 +3,7 @@ Running srcds in a docker container. Designed for Left 4 Dead 2, but should work
 
 Some code and implementations taken from:
 * [https://github.com/startersclan/docker-sourceservers/](https://github.com/startersclan/docker-sourceservers/)
-* Forked originally from [https://github.com/startersclan/docker-sourceservers/](https://github.com/Gonzih/docker-csgo-server)
+* Forked originally from [https://github.com/Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-csgo-server)
 
 ### Docker hub image
 [DockerHub](https://hub.docker.com/r/jackzmc/srcds-l4d2)
