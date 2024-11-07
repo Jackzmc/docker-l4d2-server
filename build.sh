@@ -8,6 +8,9 @@ if [[ ! -d "steamcmd" ]]; then
     curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C steamcmd -xz
 fi
 
+EXTRA_ARGS="$1"
+echo "Running +app_update $APPID $EXTRA_ARGS"
+
 steamcmd/steamcmd.sh +force_install_dir $PWD/srcds_cache +login anonymous +app_update $APPID validate +quit
 cp steamcmd/linux32/steamclient.so $PWD/srcds_cache/bin
 echo Building base...

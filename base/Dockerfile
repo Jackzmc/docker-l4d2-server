@@ -32,7 +32,9 @@ USER $USER
 # Download
 #RUN /home/$USER/steamcmd.sh +force_install_dir $SERVER_DIR +login anonymous +app_update $APPID validate +quit
 ADD --chown=$USER srcds_cache $SERVER_DIR
+
 # Copy the steamclient from steamcmd because there's some weirdness
+ADD steamcmd/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 #RUN cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 RUN chmod +x $SERVER_DIR/*.sh
 
