@@ -31,16 +31,16 @@ USER $USER
 #    && mkdir -p /home/$USER/.steam/sdk32 /home/$USER/.steam/sdk64
 # Download
 #RUN /home/$USER/steamcmd.sh +force_install_dir $SERVER_DIR +login anonymous +app_update $APPID validate +quit
-ADD srcds_cache $SERVER_DIR
+ADD --chown=$USER srcds_cache $SERVER_DIR
 # Copy the steamclient from steamcmd because there's some weirdness
-RUN cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
+#RUN cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 RUN chmod +x $SERVER_DIR/*.sh
 
-ENV LD_LIBRARY_PATH .:bin:$LD_LIBRARY_PATH
-ENV APPID $APPID
-ENV APPNAME $APPNAME
-ENV SERVER_DIR $SERVER_DIR
-ENV PATH $PATH:$SERVER_DIR
+ENV LD_LIBRARY_PATH=.:bin:$LD_LIBRARY_PATH
+ENV APPID=$APPID
+ENV APPNAME=$APPNAME
+ENV SERVER_DIR=$SERVER_DIR
+ENV PATH=$PATH:$SERVER_DIR
 
 EXPOSE 27015/udp
 
