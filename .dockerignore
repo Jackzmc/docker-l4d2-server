@@ -1,2 +1,3 @@
+# Useless media files, cannot delete them from steamcmd as it will redownload.
 srcds_cache/left4dead2/media
 

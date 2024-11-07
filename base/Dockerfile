@@ -2,7 +2,7 @@ FROM debian:12
 
 ARG APPID=222860
 ARG APPNAME=left4dead2
-ARG USER=steam
+#ARG USER=root
 ARG SERVER_DIR=/server
 
 # Install deps
@@ -20,11 +20,11 @@ RUN apt-get clean autoclean \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 # Setup dirs / user
-RUN useradd -m $USER \
-    && mkdir -p $SERVER_DIR \
-    && chown -R $USER:$USER $SERVER_DIR
-
-USER $USER
+#RUN useradd -m $USER \
+#    && mkdir -p $SERVER_DIR \
+#    && chown -R $USER:$USER $SERVER_DIR
+RUN mkdir -p $SERVER_DIR
+#USER $USER
 
 #RUN curl http://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -C /home/$USER -xz \
 #    && /home/$USER/steamcmd.sh +quit \
@@ -34,7 +34,7 @@ USER $USER
 ADD --chown=$USER srcds_cache $SERVER_DIR
 
 # Copy the steamclient from steamcmd because there's some weirdness
-ADD steamcmd/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
+ADD steamcmd/linux32/steamclient.so /root/.steam/sdk32/steamclient.so
 #RUN cp /home/$USER/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 RUN chmod +x $SERVER_DIR/*.sh
 
