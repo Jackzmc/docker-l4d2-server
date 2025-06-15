@@ -1,17 +1,18 @@
-## Left 4 Dead 2 Dedicated Server + Docker
+# Left 4 Dead 2 Dedicated Server in Docker
+
 Running srcds in a docker container. Designed for Left 4 Dead 2, but should work for other source games.
 
 Some code and implementations taken from:
 * [https://github.com/startersclan/docker-sourceservers/](https://github.com/startersclan/docker-sourceservers/)
 * Forked originally from [https://github.com/Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-csgo-server)
 
-### Docker hub image
+## Docker hub image
+
 [DockerHub](https://hub.docker.com/r/jackzmc/srcds-l4d2)
 [Dockerfile](https://github.com/Jackzmc/docker-l4d2-server/blob/base/Dockerfile)
 ```shell
 docker pull jackzmc/srcds-l4d2:base
 ```
-
 
 ## Notes
 
@@ -19,7 +20,8 @@ docker pull jackzmc/srcds-l4d2:base
 * The default entrypoint is `/bin/bash -c` with no arguments, see examples below.
 * The image contains the full game installed by steamcmd, it will not auto download updates.
 
-#### Args:
+### Args
+
 ```env
 # Appid of dedicated server
 ARG APPID=222860
@@ -27,18 +29,23 @@ ARG APPID=222860
 ARG APPNAME=left4dead2  
 # Where server runs from
 ARG SERVER_DIR=/server
+# For custom variant, the namespace to build from
+ARG NAMESPACE=jackzmc
 ```
-#### Envs:
-```env 
+
+### Envs
+
+```env
 APPID - from arg
 APPNAME - from arg (folder within $SERVER_DIR)
 SERVER_DIR
 ```
 
 ## Examples
+
 ```bash
 # Generic Server
-docker run -it -p 27015:27015 -p 27015:27015/udp jackzmc/srcds-l4d2:base "./srcds_linux -game left4dead2 -usercon +map c8m1_apartment"
+docker run -it -p 27015:27015 -p 27015:27015/udp jackzmc/srcds-l4d2:base ".-game left4dead2 -usercon +map c8m1_apartment"
 # add extra cvars at the end
 
 # Setting hostname or any variables with spaces
@@ -51,12 +58,13 @@ docker run -it -p 27015:27015 -p 27015:27015/udp jackzmc/srcds-l4d2:base ./srcds
 # Run a server with custom addons / sourcemod (external)
 docker run -it -p 27015:27015 -p 27015:27015/udp -v /home/steam/l4d2/addons:/server/left4dead2/addons -vjackzmc/srcds-l4d2:sourcemod ./srcds_linux -usercon +map c8m1_apartment 
 ```
-# Building Docker Images
+
+## Building Docker Images
+
 The game files are downloaded externally with steamcmd, this way if you need to change the Dockerfile, you don't need to wait for the entire game to be redownlaoded every time.
 The dockerfile pulls from `srcds_cache`, a script to automatically setup steamcmd, install the game, and build the image is provided: `build.sh`
 
 See the SteamCMD documentation for any dependencies needed: [https://developer.valvesoftware.com/wiki/SteamCMD#Manually](https://developer.valvesoftware.com/wiki/SteamCMD#Manually)
 
-You can use steamcmd to download to srcds-cache with this command:
+You can use steamcmd to download to srcds-cache with this command, or just run `update.sh` which will download steamcmd & install for you:
 `steamcmd.sh +login aonymous +force_install_dir /path/to/dockerfile/srcds-cache +app_update 222860 +quit`
-
