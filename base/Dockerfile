@@ -32,8 +32,6 @@ RUN mkdir -p $SERVER_DIR
 # Copy external install to image
 ADD --chown=$USER srcds_cache $SERVER_DIR
 RUN chmod +x $SERVER_DIR/*.sh
-# Copy the steamclient from steamcmd to fix steam connection
-ADD steamcmd/linux32/steamclient.so /home/$USER/.steam/sdk32/steamclient.so
 # Unneeded client media that is on the server
 RUN rm -rf $SERVER_DIR/left4dead2*/media 
 
