@@ -4,7 +4,7 @@ FROM debian:$DEBIAN_VERSION-slim
 ARG APPID=222860
 ARG APPNAME=left4dead2
 ARG SERVER_DIR=/server
-ARG USER=default
+ARG USER=steam
 
 # Install deps
 # RUN set -x \
@@ -26,7 +26,7 @@ RUN apt-get clean autoclean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add non-root user
-RUN adduser $USER
+RUN addgroup --gid 1003 $USER && adduser --uid 1003 --gid 1003 $USER
 
 RUN mkdir -p $SERVER_DIR
 # Copy external install to image
