@@ -17,7 +17,8 @@ RUN set -x \
     curl net-tools ca-certificates \
     lib32gcc-s1 \
     libc6-i386 \
-    lib32z1
+    lib32z1 \
+    lib32stdc++6 
     
 # Cleanup
 # RUN rm -rf /tmp/* /var/tmp/* && apk --purge del apk-tools
