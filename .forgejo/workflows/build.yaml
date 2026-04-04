@@ -1,6 +1,10 @@
 on: 
-  push:
   workflow_dispatch:
+  push:
+    paths:
+      - .forgejo/workflows/build.yaml
+      - base/*
+      - content/*
     
 env:
   # Image name
@@ -11,29 +15,28 @@ env:
   APPID: 222860
 
 jobs:
+  content:
+    runs-on: ubuntu-full
+    steps:
+      - name: Login to Container Registry
+        uses: https://git.jackz.me/actions/docker-login-action@v3
+        with:
+          registry: ${{ env.registry }}
+          username: ${{ env.user }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: https://git.jackz.me/actions/docker-setup-buildx-action@v3
+      - name: Build and push
+        uses: https://git.jackz.me/actions/docker-build-push-action@v6
+        with:
+          file: base/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:latest
+          cache-from: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:buildcache
+          cache-to: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:buildcache,mode=max
   build:
     runs-on: ubuntu-full
     steps:
-      - name: cache (steamcmd)
-        id: cache-steamcmd
-        uses: https://git.jackz.me/actions/cache@v5
-        with:
-          path: steamcmd
-          key: steamcmd
-      - name: cache (game download)
-        id: cache-download
-        uses: https://git.jackz.me/actions/cache@v5
-        with:
-          path: srcds_cache
-          key: srcds_cache
-      - name: download steamcmd
-        if: steps.cache-steamcmd.outputs.cache-hit != 'true'
-        run: mkdir steamcmd && curl -fsSL https://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -xz -C steamcmd
-      - name: install game (freetodownload fix)
-        if: steps.cache-download.outputs.cache-hit != 'true'
-        run: steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$PWD"/srcds_cache +login anonymous +app_update $APPID +quit
-      - name: install game
-        run: steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType linux +force_install_dir "$PWD"/srcds_cache +login anonymous +app_update $APPID +quit
       - name: Docker meta
         id: meta
         uses: https://git.jackz.me/actions/docker-metadata-action@v5
