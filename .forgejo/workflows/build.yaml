@@ -28,11 +28,7 @@ jobs:
           key: srcds_cache
       - name: download steamcmd
         if: steps.cache-steamcmd.outputs.cache-hit != 'true'
-        run: |
-          apt update -qq
-          apt install -y lib32gcc-s1 lib32stdc++6
-          mkdir steamcmd
-          curl -fsSL https://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -xz -C steamcmd
+        run: mkdir steamcmd && curl -fsSL https://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -xz -C steamcmd
       - name: install game (freetodownload fix)
         if: steps.cache-download.outputs.cache-hit != 'true'
         run: steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$PWD"/srcds_cache +login anonymous +app_update $APPID +quit
