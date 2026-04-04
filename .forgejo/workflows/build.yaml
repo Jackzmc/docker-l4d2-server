@@ -1,0 +1,44 @@
+on: 
+  push:
+  workflow_dispatch:
+    
+env:
+  # Image name
+  image: srcds-l4d2
+  tag: ${{ forgejo.ref_name }}
+  user: jackz
+  registry: git.jackz.me
+
+jobs:
+  build:
+    runs-on: ubuntu-full
+    steps:
+      - name: Docker meta
+        id: meta
+        uses: https://git.jackz.me/actions/docker-metadata-action@v5
+        with:
+          # list of Docker images to use as base name for tags
+          images: ${{ env.registry }}/${{ env.user }}/${{ env.image }}
+          # generate Docker tags based on the following events/attributes
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha
+      - name: Login to Container Registry
+        uses: https://git.jackz.me/actions/docker-login-action@v3
+        with:
+          registry: ${{ env.registry }}
+          username: ${{ env.user }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: https://git.jackz.me/actions/docker-setup-buildx-action@v3
+      - name: Build and push
+        uses: https://git.jackz.me/actions/docker-build-push-action@v6
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}:buildcache
+          cache-to: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}:buildcache,mode=max

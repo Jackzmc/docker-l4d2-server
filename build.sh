@@ -1,7 +1,7 @@
 #!/bin/bash
 APPID=222860
 APPNAME=left4dead2
-NAMESPACE=jackzmc
+NAMESPACE=git.jackz.me/jackz
 VERSION=$1
 if [[ -z "$VERSION" ]]; then VERSION="base"; fi;
 echo "Building $NAMESPACE/srcds-l4d2:$VERSION for $APPID ($APPNAME)"
