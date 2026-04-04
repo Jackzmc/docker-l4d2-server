@@ -8,11 +8,36 @@ env:
   tag: ${{ forgejo.ref_name }}
   user: jackz
   registry: git.jackz.me
+  APPID: 222860
 
 jobs:
   build:
     runs-on: ubuntu-full
     steps:
+      - name: cache (steamcmd)
+        id: cache-steamcmd
+        uses: https://git.jackz.me/actions/cache@v5
+        with:
+          path: steamcmd
+          key: steamcmd
+      - name: cache (game download)
+        id: cache-download
+        uses: https://git.jackz.me/actions/cache@v5
+        with:
+          path: srcds_cache
+          key: srcds_cache
+      - name: download steamcmd
+        if: steps.cache-steamcmd.outputs.cache-hit != 'true'
+        run: |
+          apt update -qq
+          apt install -y lib32gcc-s1 lib32stdc++6
+          mkdir steamcmd
+          curl -fsSL https://media.steampowered.com/client/steamcmd_linux.tar.gz | tar -xz -C steamcmd
+      - name: install game (freetodownload fix)
+        if: steps.cache-download.outputs.cache-hit != 'true'
+        run: steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType windows +force_install_dir "$PWD"/srcds_cache +login anonymous +app_update $APPID +quit
+      - name: install game
+        run: steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType linux +force_install_dir "$PWD"/srcds_cache +login anonymous +app_update $APPID +quit
       - name: Docker meta
         id: meta
         uses: https://git.jackz.me/actions/docker-metadata-action@v5
