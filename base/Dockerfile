@@ -43,15 +43,15 @@ COPY --chown=$USER --from=content \
     /game/srcds_run \
     /game/left4dead2.dat \
     $SERVER_DIR/
-COPY --link --chown=$USER --from=content /game/bin $SERVER_DIR/bin
-COPY --link --chown=$USER --from=content /game/hl2 $SERVER_DIR/hl2
-COPY --link --chown=$USER --from=content /game/platform $SERVER_DIR/platform
-COPY --link --chown=$USER --from=content /game/update $SERVER_DIR/update
-COPY --link --chown=$USER --from=content --exclude=media /game/left4dead2 $SERVER_DIR/left4dead2
-COPY --link --chown=$USER --from=content /game/left4dead2_dlc1 $SERVER_DIR/left4dead2_dlc1
-COPY --link --chown=$USER --from=content /game/left4dead2_dlc2 $SERVER_DIR/left4dead2_dlc2
-COPY --link --chown=$USER --from=content /game/left4dead2_dlc3 $SERVER_DIR/left4dead2_dlc3
-COPY --link --chown=$USER --from=content --exclude=media /game/left4dead2_lv $SERVER_DIR/left4dead2_lv
+COPY --chown=$USER --from=content /game/bin $SERVER_DIR/bin
+COPY --chown=$USER --from=content /game/hl2 $SERVER_DIR/hl2
+COPY --chown=$USER --from=content /game/platform $SERVER_DIR/platform
+COPY --chown=$USER --from=content /game/update $SERVER_DIR/update
+COPY --chown=$USER --from=content --exclude=media /game/left4dead2 $SERVER_DIR/left4dead2
+COPY --chown=$USER --from=content /game/left4dead2_dlc1 $SERVER_DIR/left4dead2_dlc1
+COPY --chown=$USER --from=content /game/left4dead2_dlc2 $SERVER_DIR/left4dead2_dlc2
+COPY --chown=$USER --from=content /game/left4dead2_dlc3 $SERVER_DIR/left4dead2_dlc3
+COPY --chown=$USER --from=content --exclude=media /game/left4dead2_lv $SERVER_DIR/left4dead2_lv
 
 # Use our installed version of libstdc++6/libgcc instead of outdated bundled version:
 RUN rm $SERVER_DIR/bin/libstdc++.so.6 \
