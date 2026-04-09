@@ -35,7 +35,12 @@ RUN apt-get clean autoclean \
 # Add non-root user
 RUN addgroup --gid 1003 $USER && adduser --uid 1003 --gid 1003 $USER
 
-RUN mkdir -p $SERVER_DIR
+RUN mkdir -p $SERVER_DIR && mkdir -p ~/.steam/sdk32
+
+# Potential fix for steamclient issues
+COPY --chown=$USER --from=content \
+    /steamcmd/sdk32/steamclient.so
+    ~/.steam/sdk32/steamclient.so
 
 # Copy external install to image
 COPY --chown=$USER --from=content \

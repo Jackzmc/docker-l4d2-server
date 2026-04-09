@@ -23,3 +23,4 @@ RUN steamcmd/steamcmd.sh +@sSteamCmdForcePlatformType linux +force_install_dir "
 
 FROM scratch
 COPY --from=installer /build/srcds_cache /game
+COPY --from=installer /build/steamcmd    /steamcmd
