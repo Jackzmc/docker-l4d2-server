@@ -76,6 +76,7 @@ EXPOSE 27015/udp
 WORKDIR $SERVER_DIR
 
 COPY docker-entrypoint.sh .
+RUN chmod +x docker-entrypoint.sh
 
 ENTRYPOINT ["dumb-init", "--", "./docker-entrypoint.sh"]
 CMD []
