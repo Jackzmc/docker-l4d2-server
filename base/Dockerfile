@@ -14,6 +14,7 @@ ARG USER=steam
 #     && apk update \
 #     && apk add --no-cache curl net-tools ca-certificates libstdc++ bash
 RUN set -x \
+    && dpkg --add-architecture i386 \
     && apt-get -y update \
     && apt-get -y upgrade \
     && apt-get -y install --no-install-recommends --no-install-suggests \
@@ -24,7 +25,10 @@ RUN set -x \
     lib32stdc++6 \
     libstdc++6 \
     gcc-4.9 \
-    binutils
+    binutils \
+    libcurl4 \
+    file \
+    dumb-init
     
 # Cleanup
 # RUN rm -rf /tmp/* /var/tmp/* && apk --purge del apk-tools
@@ -40,7 +44,7 @@ RUN mkdir -p $SERVER_DIR && mkdir -p ~/.steam/sdk32
 # Potential fix for steamclient issues
 COPY --chown=$USER --from=content \
     /steamcmd/linux32/steamclient.so \
-    ~/.steam/linux32/steamclient.so
+    ~/.steam/sdk32/steamclient.so
 
 # Copy external install to image
 COPY --chown=$USER --from=content \
@@ -74,4 +78,9 @@ ENV PATH="$PATH:$SERVER_DIR"
 EXPOSE 27015/udp
 
 WORKDIR $SERVER_DIR
-ENTRYPOINT ["./srcds_run", "-game", "left4dead2"]
+
+COPY docker-entrypoint.sh .
+
+ENTRYPOINT ["dumb-init", "--", "./docker-entrypoint.sh"]
+CMD []
+
