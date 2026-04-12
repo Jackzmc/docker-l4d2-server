@@ -1,3 +1,4 @@
+name: Build Content Image
 on: 
   workflow_dispatch:
   push:

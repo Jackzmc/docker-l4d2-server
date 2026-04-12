@@ -1,3 +1,4 @@
+name: Build Server Image
 on: 
   workflow_dispatch:
   push:
