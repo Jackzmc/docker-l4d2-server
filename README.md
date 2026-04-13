@@ -6,12 +6,11 @@ Some code and implementations taken from:
 * [https://github.com/startersclan/docker-sourceservers/](https://github.com/startersclan/docker-sourceservers/)
 * Forked originally from [https://github.com/Gonzih/docker-csgo-server](https://github.com/Gonzih/docker-csgo-server)
 
-## Docker hub image
+## Image
 
-[DockerHub](https://hub.docker.com/r/jackzmc/srcds-l4d2)
 [Dockerfile](https://github.com/Jackzmc/docker-l4d2-server/blob/base/Dockerfile)
 ```shell
-docker pull jackzmc/srcds-l4d2:base
+docker pull git.jackz.me/jackz/srcds-l4d2:master
 ```
 
 ## Notes
