@@ -44,18 +44,18 @@ SERVER_DIR
 
 ```bash
 # Generic Server
-docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master ".-game left4dead2 -nowatchdog -usercon +map c8m1_apartment"
+docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master " ./srcds_run -nowatchdog -usercon +map c8m1_apartment"
 # add extra cvars at the end
 
 # Setting hostname or any variables with spaces
 # You should enclose it with quotes (\"), for example:
-docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master ./srcds_linux -nowatchdog +hostname "\"My Server With Spaces\""
+docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master ./srcds_run -nowatchdog +hostname "\"My Server With Spaces\""
 
 # Versus Server
-docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master ./srcds_linux -nowatchdog +map c8m1_apartment versus +sv_gametypes "VERSUS" 
+docker run -it -p 27015:27015 -p 27015:27015/udp git.jackz.me/jackz/srcds-l4d2:master ./srcds_run -nowatchdog +map c8m1_apartment versus +sv_gametypes "VERSUS" 
 
 # Run a server with custom addons / sourcemod (external)
-docker run -it -p 27015:27015/udp -v /home/steam/l4d2/addons:/server/left4dead2/addons -vjackzmc/srcds-l4d2:sourcemod ./srcds_linux -usercon +map c8m1_apartment 
+docker run -it -p 27015:27015/udp -v /home/steam/l4d2/addons:/server/left4dead2/addons -v git.jackz.me/jackz/srcds-l4d2:master ./srcds_run -usercon +map c8m1_apartment 
 ```
 ## Building
 
