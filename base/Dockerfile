@@ -21,15 +21,15 @@ COPY --chown=$USER --from=content \
     /game/srcds_run \
     /game/left4dead2.dat \
     $SERVER_DIR/
-COPY --from=content /game/bin $SERVER_DIR/bin
-COPY --from=content /game/hl2 $SERVER_DIR/hl2
-COPY --from=content /game/platform $SERVER_DIR/platform
-COPY --from=content /game/update $SERVER_DIR/update
-COPY --from=content --exclude=media /game/left4dead2 $SERVER_DIR/left4dead2
-COPY --from=content /game/left4dead2_dlc1 $SERVER_DIR/left4dead2_dlc1
-COPY --from=content /game/left4dead2_dlc2 $SERVER_DIR/left4dead2_dlc2
-COPY --from=content /game/left4dead2_dlc3 $SERVER_DIR/left4dead2_dlc3
-COPY --from=content --exclude=media /game/left4dead2_lv $SERVER_DIR/left4dead2_lv
+COPY --chown=$USER --from=content /game/bin $SERVER_DIR/bin
+COPY --chown=$USER --from=content /game/hl2 $SERVER_DIR/hl2
+COPY --chown=$USER --from=content /game/platform $SERVER_DIR/platform
+COPY --chown=$USER --from=content /game/update $SERVER_DIR/update
+COPY --chown=$USER --from=content --exclude=media /game/left4dead2 $SERVER_DIR/left4dead2
+COPY --chown=$USER --from=content /game/left4dead2_dlc1 $SERVER_DIR/left4dead2_dlc1
+COPY --chown=$USER --from=content /game/left4dead2_dlc2 $SERVER_DIR/left4dead2_dlc2
+COPY --chown=$USER --from=content /game/left4dead2_dlc3 $SERVER_DIR/left4dead2_dlc3
+COPY --chown=$USER --from=content --exclude=media /game/left4dead2_lv $SERVER_DIR/left4dead2_lv
 
 RUN set -x \
     && dpkg --add-architecture i386 \
@@ -61,11 +61,11 @@ RUN apt-get clean autoclean \
     
 RUN mkdir -p $SERVER_DIR && mkdir -p /home/$USER/.steam/sdk32
 # Potential fix for steamclient issues
-COPY --from=content \
+COPY --chown=$USER --from=content \
     /steamcmd/linux32/steamclient.so \
     /home/$USER/.steam/sdk32/steamclient.so
 
-RUN chown -R $USER:$USER $SERVER_DIR /home/$USER && chmod -R 777 $SERVER_DIR /home/$USER
+# RUN chown -R $USER:$USER /home/$USER && chmod -R 777 $SERVER_DIR /home/$USER
     
 USER $USER
 # RUN echo "$APPID" > $SERVER_DIR/steam_appid.txt
