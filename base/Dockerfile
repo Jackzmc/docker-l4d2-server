@@ -45,8 +45,7 @@ RUN set -x \
     gcc-4.9 \
     binutils \
     libcurl4 \
-    file \
-    dumb-init
+    file
 
 # Use our installed version of libstdc++6/libgcc instead of outdated bundled version:
 RUN rm $SERVER_DIR/bin/libstdc++.so.6 \
@@ -82,6 +81,6 @@ WORKDIR $SERVER_DIR
 COPY --chown=$USER docker-entrypoint.sh .
 RUN chmod +x docker-entrypoint.sh
 
-ENTRYPOINT ["dumb-init", "--", "./docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "-c", "exec ./docker-entrypoint.sh"]
 CMD []
 

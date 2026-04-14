@@ -1,2 +1,2 @@
 #!/bin/bash
-exec ./srcds_run -nowatchdog -norestart "$@"
+./srcds_run -nowatchdog -norestart "$@"
