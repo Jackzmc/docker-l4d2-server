@@ -28,7 +28,7 @@ jobs:
           # list of Docker images to use as base name for tags
           images: |
             ${{ env.registry }}/${{ env.user }}/${{ env.image }}
-            ghcr.io/${{ env.user }}/${{ env.image }}
+            ghcr.io/${{ vars.GH_USER }}/${{ env.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
