@@ -26,13 +26,12 @@ jobs:
         uses: https://git.jackz.me/actions/docker-metadata-action@v5
         with:
           # list of Docker images to use as base name for tags
-          images: ${{ env.registry }}/${{ env.user }}/${{ env.image }}
+          images: |
+            ${{ env.registry }}/${{ env.user }}/${{ env.image }}
+            ghcr.io/${{ env.user }}/${{ env.image }}
           # generate Docker tags based on the following events/attributes
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
             type=sha
       - name: Login to Container Registry
         uses: https://git.jackz.me/actions/docker-login-action@v3
@@ -40,6 +39,12 @@ jobs:
           registry: ${{ env.registry }}
           username: ${{ env.user }}
           password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Login to Container Registry (github)
+        uses: https://git.jackz.me/actions/docker-login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ vars.GH_USER }}
+          password: ${{ secrets.GH_REGISTRY_TOKEN }}
       - name: Set up Docker Buildx
         uses: https://git.jackz.me/actions/docker-setup-buildx-action@v3
       - name: Build and push

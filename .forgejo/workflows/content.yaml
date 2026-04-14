@@ -24,13 +24,21 @@ jobs:
           registry: ${{ env.registry }}
           username: ${{ env.user }}
           password: ${{ secrets.REGISTRY_TOKEN }}
+      - name: Login to Container Registry (github)
+        uses: https://git.jackz.me/actions/docker-login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ vars.GH_USER }}
+          password: ${{ secrets.GH_REGISTRY_TOKEN }}
       - name: Set up Docker Buildx
         uses: https://git.jackz.me/actions/docker-setup-buildx-action@v3
-      - name: Build and push
+      - name: Build and push (local)
         uses: https://git.jackz.me/actions/docker-build-push-action@v6
         with:
           file: content/Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:latest
+          tags: |
+            ${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:latest
+            ghcr.io/${{ env.user }}/${{ env.image }}-content:latest
           cache-from: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:buildcache
           cache-to: type=registry,ref=${{ env.registry }}/${{ env.user }}/${{ env.image }}-content:buildcache,mode=max
