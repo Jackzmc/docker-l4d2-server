@@ -1,7 +1,7 @@
 # Left 4 Dead 2 Dedicated Server in Docker
 
 ![content.yaml status](https://git.jackz.me/jackz/docker-l4d2-server/badges/workflows/content.yaml/badge.svg)
-[!build.yaml status](https://git.jackz.me/jackz/docker-l4d2-server/badges/workflows/build.yaml/badge.svg)
+![build.yaml status](https://git.jackz.me/jackz/docker-l4d2-server/badges/workflows/build.yaml/badge.svg)
 
 Running srcds in a docker container. Designed for Left 4 Dead 2, but could work for other source games.
 
