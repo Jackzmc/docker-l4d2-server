@@ -8,9 +8,8 @@ Some code and implementations taken from:
 
 ## Image
 
-[Dockerfile](./Dockerfile)
 ```shell
-docker pull ghcr.io/jackzmc/srcds-l4d2:sha-c40946b
+docker pull ghcr.io/jackzmc/srcds-l4d2:master
 ```
 
 ## Notes
