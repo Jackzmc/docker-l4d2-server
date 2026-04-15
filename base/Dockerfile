@@ -81,6 +81,6 @@ WORKDIR $SERVER_DIR
 COPY --chown=$USER docker-entrypoint.sh .
 RUN chmod +x docker-entrypoint.sh
 
-ENTRYPOINT ["/bin/bash", "-c", "exec ./docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "./docker-entrypoint.sh"]
 CMD []
 
