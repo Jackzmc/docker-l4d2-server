@@ -3,7 +3,9 @@
 ![content.yaml status](https://git.jackz.me/jackz/docker-l4d2-server/badges/workflows/content.yaml/badge.svg)
 ![build.yaml status](https://git.jackz.me/jackz/docker-l4d2-server/badges/workflows/build.yaml/badge.svg)
 
-Running srcds in a docker container. Designed for Left 4 Dead 2, but could work for other source games.
+Running srcds in a docker container. Designed for Left 4 Dead 2, but could work for other source games. The server image contains the entire game files, enabling multiple instances to not use up storage for duplicate game files and you can easily spin up/down servers. 
+
+I use this for my admin panel to dynamically deploy new instances, and reduce the messy use of symlinks. I still do use symlinks for vpks and config files, but vastly easier to deploy with this image.
 
 Some code and implementations taken from:
 * [https://github.com/startersclan/docker-sourceservers/](https://github.com/startersclan/docker-sourceservers/)
@@ -16,6 +18,8 @@ Build image is ~3.3 GB, content image is 4.8 GB. My server has terrible upload s
 ```shell
 docker pull ghcr.io/jackzmc/srcds-l4d2:master
 ```
+
+The build image is what you want, includes the full server and necessary game files. All rights go to Valve for the files.
 
 ## Notes
 
