@@ -53,7 +53,7 @@ docker run -it -p 27015:27015 -p 27015:27015/udp ghcr.io/jackzmc/srcds-l4d2:mast
 
 # Setting hostname or any variables with spaces
 # You should enclose it with quotes (\"), for example:
-docker run -it -p 27015:27015 -p 27015:27015/udp ghcr.io/jackzmc/srcds-l4d2:master "+hostname "\"My Server With Spaces\""
+docker run -it -p 27015:27015 -p 27015:27015/udp ghcr.io/jackzmc/srcds-l4d2:master "+hostname \"My Server With Spaces\""
 
 # Versus Server
 docker run -it -p 27015:27015 -p 27015:27015/udp ghcr.io/jackzmc/srcds-l4d2:master +map c8m1_apartment versus +sv_gametypes "VERSUS" 
