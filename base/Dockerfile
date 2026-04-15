@@ -14,7 +14,7 @@ ARG GID=$UID
 # Add non-root user
 RUN addgroup --gid $GID $USER && adduser --uid $UID --gid $GID $USER
 
-# Copy external install to image
+# Copy content image files to this image
 COPY --chown=$USER --from=content \
     /game/hlds_steamgames.vdf \
     /game/srcds_linux \
@@ -31,6 +31,8 @@ COPY --chown=$USER --from=content /game/left4dead2_dlc2 $SERVER_DIR/left4dead2_d
 COPY --chown=$USER --from=content /game/left4dead2_dlc3 $SERVER_DIR/left4dead2_dlc3
 COPY --chown=$USER --from=content --exclude=media /game/left4dead2_lv $SERVER_DIR/left4dead2_lv
 
+# Install runtime dependencies
+# Some dependencies (gcc, libcurl4, file, etc) are not strictly necessary, just provided to aid in testing
 RUN set -x \
     && dpkg --add-architecture i386 \
     && apt-get -y update \
@@ -47,27 +49,31 @@ RUN set -x \
     libcurl4 \
     file
 
+# Cleanup APT and remove apt sources
+RUN apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    
 # Use our installed version of libstdc++6/libgcc instead of outdated bundled version:
+# This fixes issues with System2 ext not working with outdated versions
 RUN rm $SERVER_DIR/bin/libstdc++.so.6 \
     && rm $SERVER_DIR/bin/dedicated/libstdc++.so.6 \
     && rm $SERVER_DIR/bin/libgcc_s.so.1 \
     && rm $SERVER_DIR/bin/dedicated/libgcc_s.so.1
-
-RUN apt-get clean autoclean \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
     
 RUN mkdir -p $SERVER_DIR && mkdir -p /home/$USER/.steam/sdk32
-# Potential fix for steamclient issues
+
+# Fix for steamclient issues
+# We copy to ~/.steam/sdk32 where the game looks for it there instead of it's own local version
 COPY --chown=$USER --from=content \
     /steamcmd/linux32/steamclient.so \
     /home/$USER/.steam/sdk32/steamclient.so
 
+# If necessary to deal with permissions, make everything readable.
+# NOTE: TAKES VERY LONG TIME. 5 minutes on my machine, 2h+ before cancelled on CI
 # RUN chown -R $USER:$USER /home/$USER && chmod -R 777 $SERVER_DIR /home/$USER
     
 USER $USER
-# RUN echo "$APPID" > $SERVER_DIR/steam_appid.txt
 
 ENV APPID=$APPID
 ENV APPNAME=$APPNAME
@@ -78,9 +84,11 @@ EXPOSE 27015/udp
 
 WORKDIR $SERVER_DIR
 
+# Provides default command flags such as -nowatchdog (fixes "Alarm Clock" crash)
 COPY --chown=$USER docker-entrypoint.sh .
 RUN chmod +x docker-entrypoint.sh
 
+# Bash is used to ensure CTRL+C and stdin still work
 ENTRYPOINT ["/bin/bash", "./docker-entrypoint.sh"]
 CMD []
 
