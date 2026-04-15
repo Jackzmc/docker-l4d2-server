@@ -63,4 +63,4 @@ docker run -it -p 27015:27015/udp -v /home/steam/l4d2/addons:/server/left4dead2/
 ```
 ## Building
 
-There are two images, a content image (srcds-l4d2-content:latest) and the server image itself (srcds-l4d2:master). The server copies server content from the content image. Content image only needs to rebuilt when the game updates.
+There are two images, a content image (srcds-l4d2-content:latest) and the server image itself (srcds-l4d2:master). The server copies server content from the content image. Content image only needs to be rebuilt when the game updates.
