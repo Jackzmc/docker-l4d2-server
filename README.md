@@ -8,9 +8,8 @@ Some code and implementations taken from:
 
 ## Image
 
-[Dockerfile](https://github.com/Jackzmc/docker-l4d2-server/blob/base/Dockerfile)
 ```shell
-docker pull git.jackz.me/jackz/srcds-l4d2:master
+docker pull ghcr.io/jackzmc/srcds-l4d2:master
 ```
 
 ## Notes
