@@ -12,7 +12,7 @@ ARG UID=1003
 ARG GID=$UID
 
 # Add non-root user
-RUN addgroup --gid $GID $USER && adduser --uid $UID --gid $GID $USER
+RUN groupadd --gid $GID $USER && useradd --uid $UID --gid $GID $USER
 
 # Copy content image files to this image
 COPY --chown=$USER --from=content \
