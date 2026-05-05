@@ -2,16 +2,12 @@ ARG DEBIAN_VERSION=trixie
 FROM debian:$DEBIAN_VERSION-slim AS installer
 
 ARG APPID=222860
-ARG USER=steam
 
 # Install necessary libs
 RUN apt-get update \
     && apt install -y lib32gcc-s1 curl
 
-# Setup user
-RUN addgroup --gid 1003 $USER && adduser --uid 1003 --gid 1003 $USER && mkdir /build && chown $USER /build
 WORKDIR /build
-USER $USER
 
 # Download steamcmd installer
 RUN mkdir steamcmd && curl -sqL "https://media.steampowered.com/client/steamcmd_linux.tar.gz" | tar xz -C steamcmd
