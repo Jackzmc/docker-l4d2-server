@@ -1,5 +1,5 @@
 ARG CONTENT_IMG=git.jackz.me/jackz/srcds-l4d2-content:latest
-ARG DEBIAN_VERSION=bookworm
+ARG DEBIAN_VERSION=trixie
 
 FROM $CONTENT_IMG AS content
 FROM debian:$DEBIAN_VERSION-slim
