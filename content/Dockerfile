@@ -1,4 +1,4 @@
-ARG DEBIAN_VERSION=bookworm
+ARG DEBIAN_VERSION=trixie
 FROM debian:$DEBIAN_VERSION-slim AS installer
 
 ARG APPID=222860
