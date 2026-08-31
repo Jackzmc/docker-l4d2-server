@@ -15,11 +15,11 @@ env:
   tag: ${{ forgejo.ref_name }}
   user: jackz
   registry: git.jackz.me
-  APPID: 222860
+  APPID: "222860"
 
 jobs:
   build:
-    runs-on: ubuntu-full
+    runs-on: debian-latest
     steps:
       - name: Docker meta
         id: meta
@@ -33,7 +33,7 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha
-      - name: Login to Container Registry
+      - name: Login to Container Registry (local)
         uses: https://git.jackz.me/actions/docker-login-action@v3
         with:
           registry: ${{ env.registry }}
