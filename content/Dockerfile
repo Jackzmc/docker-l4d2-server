@@ -9,7 +9,7 @@ RUN apt-get update \
     && apt install -y lib32gcc-s1 curl
 
 # Setup user
-RUN addgroup --gid 1003 $USER && adduser --uid 1003 --gid 1003 $USER && mkdir /build && chown $USER /build
+RUN groupadd --gid 1003 $USER && useradd --uid 1003 --gid 1003 $USER && mkdir /build && chown $USER /build
 WORKDIR /build
 USER $USER
 
